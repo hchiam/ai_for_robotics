@@ -5,25 +5,19 @@ code based on Udacity course AI for Robotics
 
 ### Localization:
 localization : initial belief --> sense --> move --> sense --> move
-
 i.e. : initial belief --> ( back & forth : sense <--> move )
 
-move loses info
+* move loses info
+* sense gains info
 
-sense gains info
-
-belief = probability
-
-sense = multiplication followed by normalization
-
-move = addition (convolution)
+* belief = probability
+* sense = multiplication followed by normalization
+* move = addition (convolution)
 
 ### Bayes Rule for Localization:
 p(Xi|M) = p(Xi) * p(M|Xi) / p(M)
-
-(let Xi = probability of being at a given position xi)
-
-(let M = probability of getting a given measurement)
+* (let Xi = probability of being at a given position xi)
+* (let M = probability of getting a given measurement)
 
 p(Xi|M) = prior * measurement probability / p(M)
 
