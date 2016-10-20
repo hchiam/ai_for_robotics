@@ -5,10 +5,12 @@ code based on Udacity course AI for Robotics
 
 ### Localization:
 localization : initial belief --> sense --> move --> sense --> move
+
 i.e. : initial belief --> ( back & forth : sense <--> move )
 
 * move loses info
 * sense gains info
+
 
 * belief = probability
 * sense = multiplication followed by normalization
