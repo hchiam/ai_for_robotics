@@ -19,8 +19,8 @@
 
 p = [0.2, 0.2, 0.2, 0.2, 0.2] # start with uniform probability distribution over 5 positions
 
-world = ['green', 'red', 'red', 'green', 'green']
-measurements = ['red','red'] # what it sees at different time stamps
+world = ['line', 'road', 'road', 'road', 'line']
+measurements = ['road','road'] # what it sees at different time stamps
 motions = [1,1] # how far it tries to move at different time stamps
 
 # probability adjustments for what is measured or "seen":
