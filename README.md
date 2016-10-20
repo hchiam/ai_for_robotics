@@ -26,3 +26,5 @@ p(Xi|M) = prior * measurement probability / p(M)
 p(M) = normalization constant
 
 p(M) = sum over i of ( p(Xi) * p(M|Xi) )
+
+So: p(Xi|M) = p(Xi) * p(M|Xi) / sum over i of ( p(Xi) * p(M|Xi) )
