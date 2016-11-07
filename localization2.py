@@ -1,12 +1,14 @@
+####### NOTES: #######
+
 # The function localize takes the following arguments:
 #
-# colors:
+# world:
 #        2D list, each entry either 'R' (for red cell) or 'G' (for green cell)
 #
-# measurements:
+# sees:
 #        list of measurements taken by the robot, each entry either 'R' or 'G'
 #
-# motions:
+# moves:
 #        list of actions taken by the robot, each entry of the form [dy,dx],
 #        where dx refers to the change in the x-direction (positive meaning
 #        movement to the right) and dy refers to the change in the y-direction
@@ -14,12 +16,12 @@
 #        NOTE: the *first* coordinate is change in y; the *second* coordinate is
 #              change in x
 #
-# sensor_right:
+# see_correct:
 #        float between 0 and 1, giving the probability that any given
 #        measurement is correct; the probability that the measurement is
 #        incorrect is 1-sensor_right
 #
-# p_move:
+# move_correct:
 #        float between 0 and 1, giving the probability that any given movement
 #        command takes place; the probability that the movement command fails
 #        (and the robot remains still) is 1-p_move; the robot will NOT overshoot
@@ -43,45 +45,85 @@
 #  [1,0] - down
 #  [-1,0] - up
 
-def sense(p, Z, sensor_right): # "see and update belief probabilities"
-    q=[]
-    for i in range(len(p)):
-        for j in range(len(p[0])):
-            hit = (Z == world[i][j])
-            # fill q (the updated belief probabilities) with:  p(sensed correct) * previous beliefs * p hit (or miss)
-            q[i].append( sensor_right * p[i][j] * (hit * pHit + (1-hit) * pMiss) )
-    s = sum(q)
-    for i in range(len(q)):
-        for j in range(len(q[0])):
-            q[i][j] = q[i][j] / s
-    return q
 
-def move(p, U, p_move): # "move and update belief probabilities"
-    q = []
-    for i in range(len(p)):
-        for j in range(len(p[0])):
-            # fill q (the updated belief probabilities) with:  p(motion correct) * previous beliefs + p not move & just stayed
-            s = p_move * p[(i-U[0]) % len(p)][(j-U[1]) % len(p[0])]
-            s = s + (1-p_move) * p[i][j]
-            q.append(s)
-    return q
+####### FUNCTIONS: #######
 
-def localize(colors,measurements,motions,sensor_right,p_move):
-    # initializes p to a uniform distribution over a grid of the same dimensions as colors
-    pinit = 1.0 / float(len(colors)) / float(len(colors[0]))
-    p = [[pinit for row in range(len(colors[0]))] for col in range(len(colors))]
-    
-    for i in range(len(motions)):
-        p = move(p, motions[i], p_move);
-        p = sense(p, measurements[i], sensor_right);
-    
-    # >>> Insert your code here <<<
-    
+# creates a probability distribution with all locations in 2D world having equal probability:
+def uniformDistribution2D(world):
+    num_rows = float(len(world))
+    num_cols = float(len(world[0]))
+    pinit = 1.0 / num_rows / num_cols
+    p = [[pinit for row in range(len(world[0]))] for col in range(len(world))]
     return p
 
+# makes probabilities for all locations in world add up to 1:
+def normalize(p):
+    s = 0
+    for i in range(len(p)):
+        s += sum(p[i])
+    for i in range(len(p)):
+        for j in range(len(p[0])):
+            p[i][j] = p[i][j] / s
+    return p
+
+# "see"s and updates belief probabilities based on what robot thinks it saw:
+def see(p, measurement, see_correct):
+    q = []
+    for i in range(len(p)):
+        q.append([])
+        for j in range(len(p[0])):
+            hit = (measurement == world[i][j])
+            # fill q (the updated belief probabilities) with:  p(sensed correct) * previous beliefs * p hit (or miss)
+            q[i].append( p[i][j] * (hit * see_correct + (1-hit) * (1-see_correct)) )
+    q = normalize(q)
+    return q
+
+# "move"s and updates belief probabilities based on how robot thinks it moved:
+def move(p, motion, move_correct):
+    q = []
+    for i in range(len(p)):
+        q.append([])
+        for j in range(len(p[0])):
+            # fill q (the updated belief probabilities) with:  p(motion correct) * previous beliefs + p not move & just stayed
+            s = move_correct * p[(i-motion[0]) % len(p)][(j-motion[1]) % len(p[0])]
+            s += (1-move_correct) * p[i][j]
+            q[i].append(s)
+    return q
+
+# figures out where robot is in world based on what it sees as it moves:
+def localize(world, measurements, motions, see_correct, move_correct):
+    p = uniformDistribution2D(world)
+    for i in range(len(motions)):
+        p = move(p, motions[i], move_correct);
+        p = see(p, measurements[i], see_correct);
+    return p
+
+# shows likelihood of robot being in each location in world:
 def show(p):
-    rows = ['[' + ','.join(map(lambda x: '{0:.5f}'.format(x),r)) + ']' for r in p]
+    rows = [ '[' + ','.join(map(lambda x: '{0:.5f}'.format(x),row)) + ']' for row in p ]
     print '[' + ',\n '.join(rows) + ']'
+
+
+####### INPUTS: #######
+
+world = [['R','G','G','R','R'],
+          ['R','R','G','R','R'],
+          ['R','R','G','G','R'],
+          ['R','R','R','R','R']]
+measurements = ['G','G','G','G','G']
+motions = [[0,0],[0,1],[1,0],[1,0],[0,1]]
+see_correct = 0.7
+move_correct = 0.8
+
+####### LOCALIZE based on inputs: #######
+
+p = localize(world, measurements, motions, see_correct, move_correct)
+
+
+####### ANSWER: #######
+
+show(p)
+
 
 #############################################################
 # For the following test case, your output should be
@@ -91,11 +133,4 @@ def show(p):
 #  [0.00910, 0.00715, 0.01434, 0.04313, 0.03642]]
 # (within a tolerance of +/- 0.001 for each entry)
 
-colors = [['R','G','G','R','R'],
-          ['R','R','G','R','R'],
-          ['R','R','G','G','R'],
-          ['R','R','R','R','R']]
-measurements = ['G','G','G','G','G']
-motions = [[0,0],[0,1],[1,0],[1,0],[0,1]]
-p = localize(colors,measurements,motions,sensor_right = 0.7, p_move = 0.8)
-show(p) # displays your answer
+# (it most likely moved down along the green path and stopped at the end)
