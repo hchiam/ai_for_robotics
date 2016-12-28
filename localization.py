@@ -12,7 +12,7 @@
 
 # belief = probability
 # sense = multiplication followed by normalization
-# move = addition (convolution)
+# move = convolution (= fancy "blurred" multiplication to combine probabilities that have more than one step)
 
 
 ### variables, setup:
