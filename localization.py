@@ -10,10 +10,11 @@
 # move loses info
 # sense gains info
 
-# belief = probability
+# belief = probability.
 # sense = multiplication followed by normalization
+    # ; updating beliefs (Bayes Rule).
 # move = convolution (= fancy "blurred" multiplication to combine probabilities that have more than one step)
-
+    # ; tracking where our probability "went" when we moved (which meant using the law of Total Probability).
 
 ### variables, setup:
 
