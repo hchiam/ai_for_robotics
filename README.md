@@ -40,6 +40,6 @@ p(Xit) = sum over j of ( p(Xjt-1) * p(Xi|Xj) )
 
 ### Comparing Filters:
 
-| Histogram Filters | Kalman Filters | Particle Filters
---- | --- | --- | ---
-state space | discrete | continuous | 
+Filters:    | Histogram Filters | Kalman Filters | Particle Filters
+----------- | ----------------- | -------------- | ---
+state space | discrete          | continuous     | 
