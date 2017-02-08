@@ -181,7 +181,7 @@ initial_xy = [4., 12.]
 dt = 0.1
 
 x = matrix([[initial_xy[0]], [initial_xy[1]], [0.], [0.]]) # initial state (location and velocity)
-u = matrix([[0.], [0.], [0.], [0.]]) # external motion
+u = matrix([[0.], [0.], [0.], [0.]]) # external motion (like if you were somehow able to "push" objects you're observing)
 
 #### DO NOT MODIFY ANYTHING ABOVE HERE ####
 #### fill this in, remember to use the matrix() function!: ####
