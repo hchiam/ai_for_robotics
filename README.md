@@ -37,3 +37,9 @@ p(A) = p(B) * p(A|B)
 p(Xit) = sum over j of ( p(Xjt-1) * p(Xi|Xj) )
 * (let t = current time stamp)
 * (let t-1 = previous time stamp)
+
+### Comparing Filters:
+
+| Histogram Filters | Kalman Filters | Particle Filters
+--- | --- | --- | ---
+state space | discrete | continuous | 
