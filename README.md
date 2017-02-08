@@ -40,12 +40,12 @@ p(Xit) = sum over j of ( p(Xjt-1) * p(Xi|Xj) )
 
 ### Comparing Filters:
 
-Filters:                 | Histogram Filters | Kalman Filters | Particle Filters
------------------------- | ----------------- | -------------- | ---
-State Space              | discrete          | continuous :)  | continuous :)
-Belief 'Bumps' Allowed   | multimodal :)     | unimodal       | multimodal :)
-Efficiency               | exponential (dims) | quadratic :)  | ? (keep =< 4 dimensions)
-In Robotics              | approx. (discrete) | approx. (linear vs. non-linear) | approximate
+Filters:                 | Histogram Filters  | Kalman Filters                  | Particle Filters
+------------------------ | ------------------ | ------------------------------- | ---
+State Space              | discrete           | continuous :)                   | continuous :)
+Belief 'Bumps' Allowed   | multimodal :)      | unimodal                        | multimodal :)
+Algorithm Efficiency     | exponential (dims) | quadratic :)                    | ? (keep =< 4 dimensions)
+Robot Position Accuracy  | approx. (discrete) | approx. (linear vs. non-linear) | approximate
 
 But the key advantage of particle filters is: easy to program. :)
 
