@@ -1,4 +1,5 @@
 # My Solution Code for Problem Set 2's Programming Exercise
+# https://classroom.udacity.com/courses/cs373/lessons/48696618/concepts/487431440923#
 
 
 # Fill in the matrices P, F, H, R and I at the bottom
@@ -188,7 +189,7 @@ u = matrix([[0.], [0.], [0.], [0.]]) # external motion
 # initial uncertainty: 0 for positions x and y, 1000 for the two velocities
 P =  matrix([[0.,0.,0.,0.],[0.,0.,0.,0.],[0.,0.,1000.,0.],[0.,0.,0.,1000.]])
 
-# next state function: generalize the 2d version to 4d
+# next state function: generalize the 2d version to 4d (i.e. x,y,vx,vy instead of just x,vx)
 F =  matrix([[1.,0.,0.1,0.],[0.,1.,0.,0.1],[0.,0.,1.,0.],[0.,0.,0.,1.]])
 
 # measurement function: reflect the fact that we observe x and y but not the two velocities
@@ -200,7 +201,7 @@ R =  matrix([[0.1,0.],[0.,0.1]])
 # 4d identity matrix
 I =  matrix([[1.,0.,0.,0.],[0.,1.,0.,0.],[0.,0.,1.,0.],[0.,0.,0.,1.]])
 
-###### DO NOT MODIFY ANYTHING HERE #######
+###### DO NOT MODIFY ANYTHING BELOW HERE #######
 
 filter(x, P)
 
