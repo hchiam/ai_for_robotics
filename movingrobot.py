@@ -141,3 +141,19 @@ myrobot = myrobot.move(-pi/2, 15.0)
 print(myrobot.sense())
 myrobot = myrobot.move(-pi/2, 10.0)
 print(myrobot.sense())
+
+print("\nCreate n particles:\n")
+
+n = 1000
+p = [] # list of particles
+
+for i in range(n):
+    r = robot()
+    p.append(r)
+    # this has the same effect as:
+    # x = random.random() * world_size
+    # y = random.random() * world_size
+    # a = random.random() * 2.0 * pi
+    # p.append([x,y,a])
+
+print(len(p))
