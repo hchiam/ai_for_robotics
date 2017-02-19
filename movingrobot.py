@@ -157,3 +157,11 @@ for i in range(n):
     # p.append([x,y,a])
 
 print(len(p))
+
+print("\nMove all particles:\n")
+
+# turn 0.1, move 5
+for particle in p:
+    particle = particle.move(0.1, 5.0)
+
+print("(Done.)")
