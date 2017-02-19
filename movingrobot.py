@@ -144,7 +144,8 @@ print(myrobot.sense())
 
 print("\nCreate n particles with noise (so a later calculation doesn't divide by 0):\n")
 
-n = 1000
+n = 1000 # number of particles
+t = 10 # time steps or iterations (of moving, sensing, and "survival of the fittest")
 p = [] # list of particles
 
 for i in range(n):
@@ -159,51 +160,55 @@ for i in range(n):
 
 print(len(p))
 
-print("\nMove all particles:\n")
+for step in range(t):
+    
+    print("\nMove all particles:\n")
+    
+    # turn 0.1, move 5
+    for particle in p:
+        particle = particle.move(0.1, 5.0)
+    
+    print("(Done.)")
+    
+    print("\nApply importance weights; get guess particle 'fitness' levels:\n")
+    
+    # make use of measurement_prob(measurement)
+    w = []
+    
+    for particle in p:
+        w.append(particle.measurement_prob(particle.sense()))
+    
+    print(str(len(w)) + " importance weights created")
+    
+    print("\nResample particles based on importance weights weighing probability of sampling:\n")
+    
+    print("(Using re-sampling wheel for linear time.)")
+    
+    # alternate description:
+    # https://www.youtube.com/watch?v=tvNPidFMY20
+    
+    p2 = []
+    randomStartIndex = int(random.random() * n) # get a random index out of n possible indices
+    cumuDistribAroundClock = 0.0 # initialize running variable of how far around the "pie" we've traveled
+    maxWt = max(w)
+    
+    # rename variables for shorter names in the following loop
+    index = randomStartIndex
+    beta = cumuDistribAroundClock
+    
+    # get n particles from the old list of particles (with bigger "pie slices" being more likely to get more repeats)
+    for i in range(n):
+        # go around the "pie"
+        beta += random.random() * 2.0 * maxWt # random.random() is between 0 and 1, so makes beta between 0 and 2 x max(wt)
+        # get next particle INDEX with particle WEIGHT that happens to "CAPTURE" BETA (the "pie spinner")
+        while beta > w[index]:
+            beta -= w[index]
+            index = (index + 1) % n # check the next "slice" of the "pie"
+        # add that particle to the new, re-sampled particles list
+        p2.append(p[index])
+    
+    p = p2 # update to re-sampled particles list
+    
+    print("(Done.)")
 
-# turn 0.1, move 5
-for particle in p:
-    particle = particle.move(0.1, 5.0)
-
-print("(Done.)")
-
-print("\nApply importance weights; get guess particle 'fitness' levels:\n")
-
-# make use of measurement_prob(measurement)
-w = []
-
-for particle in p:
-    w.append(particle.measurement_prob(particle.sense()))
-
-print(str(len(w)) + " importance weights created")
-
-print("\nResample particles based on importance weights weighing probability of sampling:\n")
-
-print("(Using re-sampling wheel for linear time.)")
-
-# alternate description:
-# https://www.youtube.com/watch?v=tvNPidFMY20
-
-p2 = []
-randomStartIndex = int(random.random() * n) # get a random index out of n possible indices
-cumuDistribAroundClock = 0.0 # initialize running variable of how far around the "pie" we've traveled
-maxWt = max(w)
-
-# rename variables for shorter names in the following loop
-index = randomStartIndex
-beta = cumuDistribAroundClock
-
-# get n particles from the old list of particles (with bigger "pie slices" being more likely to get more repeats)
-for i in range(n):
-    # go around the "pie"
-    beta += random.random() * 2.0 * maxWt # random.random() is between 0 and 1, so makes beta between 0 and 2 x max(wt)
-    # get next particle INDEX with particle WEIGHT that happens to "CAPTURE" BETA (the "pie spinner")
-    while beta > w[index]:
-        beta -= w[index]
-        index = (index + 1) % n # check the next "slice" of the "pie"
-    # add that particle to the new, re-sampled particles list
-    p2.append(p[index])
-
-p = p2 # update to re-sampled particles list
-
-print("(Done.)")
+print("\nDone iterations of move, sense, etc.\n")
