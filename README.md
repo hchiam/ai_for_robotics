@@ -51,4 +51,4 @@ But the key advantage of particle filters is: easy to program. :)
 
 Per "guess" particle: (x,y,direction) --> particles --> approx. posterior probability representation of position
 
-***"Survival of the fittest" "guess" particles (with min(real-guess))*** --> (clusters --> cluster).
+**"Survival of the fittest 'guess' particles" (with min(real-guess))** --> (clusters --> cluster).
