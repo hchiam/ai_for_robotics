@@ -142,13 +142,14 @@ print(myrobot.sense())
 myrobot = myrobot.move(-pi/2, 10.0)
 print(myrobot.sense())
 
-print("\nCreate n particles:\n")
+print("\nCreate n particles with noise (so a later calculation doesn't divide by 0):\n")
 
 n = 1000
 p = [] # list of particles
 
 for i in range(n):
     r = robot()
+    r.set_noise(0.05, 0.05, 5.0)
     p.append(r)
     # this has the same effect as:
     # x = random.random() * world_size
@@ -165,3 +166,13 @@ for particle in p:
     particle = particle.move(0.1, 5.0)
 
 print("(Done.)")
+
+print("\nApply importance weights; get guess particle 'fitness' levels:\n")
+
+# make use of measurement_prob(measurement)
+w = []
+
+for particle in p:
+    w.append(particle.measurement_prob(particle.sense()))
+
+print(str(len(w)) + " importance weights created")
