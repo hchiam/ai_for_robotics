@@ -1,6 +1,8 @@
 # ai_for_robotics
 Code and notes based on Udacity course AI for Robotics.
 
+Also found these summary notes:  https://storage.googleapis.com/supplemental_media/udacityu/cs373/Brief%20Course%20Summary.pdf
+
 ## Localization:
 localization : initial belief --> sense --> move --> sense --> move
 
@@ -45,7 +47,33 @@ Belief 'Bumps' Allowed   | multimodal :)      | unimodal                        
 Algorithm Efficiency     | exponential (dims) | quadratic :)                    | ? (keep =< 4 dimensions)
 Robot Position Accuracy  | approx. (discrete) | approx. (linear vs. non-linear) | approximate
 
+**Histogram Filter**:  Measurement Updates
+
+Approximate / proportional
+
+P(X|Z) <- P(Z|X) P(X)
+
+P(X|Z) <-(resampling)- importance weights * particles
+
+**Kalman Filter**:  Motion Updates
+
+Gaussians
+
+P(X') = sum ( P(X'|X) P(X) )
+
+P(X') = sum of each ( sample * particle )
+
 But the key advantage of particle filters is: easy to program. :)
+
+**Google Car**:
+
+Histogram Methods + Particle Methods
+
+Robot model:  2 stationary, 2 non-stationary wheels.  "Bicycle model" because half of it stationary/non wheels.
+
+Sensor data:  map (not landmarks) <- match with snapshots.
+
+Additional sensors:  GPS, inertial, etc.
 
 ## Particle Filter:
 
