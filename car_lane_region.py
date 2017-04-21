@@ -32,7 +32,9 @@ fit_bottom = np.polyfit((left[0], right[0]), (left[1], right[1]), 1)
 x,y = np.meshgrid(np.arange(0, xsize), np.arange(0, ysize))
 
 # get pixels that are within the triangle
-pixels_to_change = (y > (fit_left[0] * x + fit_left[1])) & (y > (fit_right[0] * x + fit_right[1])) & (y < (fit_bottom[0] * x + fit_bottom[1]))
+pixels_to_change = (y > (fit_left[0] * x + fit_left[1])) \
+                 & (y > (fit_right[0] * x + fit_right[1])) \
+                 & (y < (fit_bottom[0] * x + fit_bottom[1]))
 
 # set those pixels to red in the corresponding copied array
 region_select[pixels_to_change] = [255, 0, 0]
